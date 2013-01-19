@@ -9,6 +9,9 @@ require 'fileutils'
 
 require 'rexml-expansion-fix'
 
+require 'rubygems'
+require 'active_record'
+
 class FileXml
 
  def initialize(path)
@@ -111,15 +114,31 @@ class FileXml
 
 
 
+ActiveRecord::Base.establish_connection(
+  :adapter  => "mysql2",
+  :host     => "127.0.0.1",
+  :username => "root",
+  :password => "18281828",
+  :database => "realt"
+  )
+  
+  
+class Realt < ActiveRecord::Base
+
+
+end
+
+
+
 class HTMLrealt
 
    @resTable = Array.new #для записи результата
    
-   def initialize(path, "http://realt.ua", "/Db2/0Sd_Kv.php?", 2, 0, 1000, 0)
+   def initialize(path, urlS, urlQ, valt, сn_min, сn_max, vSps)
       Dir.chdir(path) #текущий рабочий каталог
 	  file = File.open('tableXML.xml', 'r')
-      @xmlREXML = REXML::Document.new file.gets
-	  print "\n\n\n\n@xmlREXML = ",@xmlREXML ,"\n\n\n\n"
+      #@xmlREXML = REXML::Document.new file.gets
+	  #print "\n\n\n\n@xmlREXML = ",@xmlREXML ,"\n\n\n\n"
 	  
 	  @urlSite = proc{ |showNum, pos| "#{urlS}#{urlQ}Cn_min=#{сn_min}&Cn_max=#{сn_max}&TmSdch=#{9999}&srtby=#{5}&showNum=#{showNum}&vSps=#{vSps}&idNp=#{100000}&pos=#{pos}"}
 	  
@@ -128,11 +147,10 @@ class HTMLrealt
 
       
    def templetN(arg)
+      
    
-      #print "_________templetN_________________", arg, "\n\n"
-	  
-	  #print "_________KKKKKKKKKKKKKKKKKKKKKKKKKKK_________________", "\n\n"	  
-       # Создает шаблон XML и заполняет
+      @file.write arg 
+	  @file.write "\n"
    end
    
    def temletSearch(argSearch, title)
@@ -157,7 +175,7 @@ class HTMLrealt
 			   			   
 			   resTd.inner_html #получаем значение ячейки
 			   
-			   if indexBox = 1
+			   if indexBox == 1
 			     then wr = temletSearch(resTd.inner_html, "2") #ещет значение в шаблоне XML "2" - значение атрибута title; resTd.inner_html - текстовое значение; возвращает false or tru  				 
 			   end
 			   arrayBox[indexBox] = resTd.inner_html #сохраняем ячейки в массиве
@@ -199,7 +217,7 @@ class HTMLrealt
       Hpricot(@strHtml) #Используем Hpricot для анализа html  
    end
    
-   def searchCnt_all(strHtmlHpr)
+   def searchCnt_all(strHtmlHpr) #находит значение переменной cnt_all которая используется в URI
        
 	   countLinStr = "http:\/\/realt\.ua.+(cnt_all=[0-9]+).+"#.encode("Windows-1251")
 	   countLinExpr = Regexp.compile(countLinStr) #Создает регулярное выражение из строки
@@ -241,7 +259,7 @@ class HTMLrealt
        #And change the "OEMCP" value to "1252"  
 	   
 	   
-	   print "Charset of html page is ", @encodingStr, "\n\n"#возвращет кодировку страницы
+	   #print "Charset of html page is ", @encodingStr, "\n\n"#возвращет кодировку страницы
 	   
 	   
 		
@@ -252,7 +270,7 @@ class HTMLrealt
 	   
 	   end
 		
-	   file = File.open('realt.html', 'w') #открывает файл для записи результата для удобства просмотра	
+	   @file = File.open('realt.xml', 'w:windows-1251') #открывает файл для записи результата для удобства просмотра	"w:utf-8"
 	   
 	   countPage = @cnt_all/50 + 1
 	   
@@ -264,7 +282,7 @@ class HTMLrealt
        countPage.times do |countP| 
           
 		 pos = countP*50
-		 print "pos = ", pos, "\n\n"
+		 #print "pos = ", pos, "\n\n"
 		 
 		 #перебирая параметром pos пролистываем html страницы
 	    htmlHpricot(showNum, pos).search(:th).each do |res|
@@ -273,15 +291,14 @@ class HTMLrealt
 		      print "Number page: ", countP, "\n\n\n\n"
 			  templetN res.parent.parent #file.write res.parent.parent #вложенность <table> <tr><th></th></tr> </table>
 			  #file.write "\n"
-			  puts "if"
+			  
 			end		
 			
 	   end
 		
        end	
 
-     file.write @resTable #вложенность <table> <tr><th></th></tr> </table>
-	 file.write "\n"	   
+       
 	   print "countPage = ", countPage, "\n\n"
 	   print "showNum = ", showNum, "\n\n"
 	   print "cnt_all = ", @cnt_all, "\n\n"
@@ -306,11 +323,3 @@ htm = HTMLrealt.new("D:\\realt\\", "http://realt.ua", "/Db2/0Sd_Kv.php?", 2, 0, 
 
 htm.catchPage("[Рр]айон города", "Улица.+", ".+Кол-во.+комнат.+", ".+Этаж :.+")
 
-
-#print htm.body
-
-y = 'jjjjjjj/tablekkkkkkkk'
-if y =~ /.jj.table./
-  then
-     print "y = ", 1
-end

@@ -1,0 +1,24 @@
+<table cols='3' border='1' align='center' rules='cols'>
+  <tr>
+    <td title='2' align='center' valign='middle'>
+      2
+    </td>
+    <td title='1' align='center' valign='middle'>
+      b
+    </td>
+    <td title='2' align='center' valign='middle'>
+      c
+    </td>
+  </tr>
+  <tr>
+    <td title='0' align='center' valign='middle'>
+      777
+    </td>
+    <td title='1' align='center' valign='middle'>
+      2
+    </td>
+    <td title='2' align='center' valign='middle'>
+      3
+    </td>
+  </tr>
+</table>
