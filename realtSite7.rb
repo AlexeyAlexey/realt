@@ -114,8 +114,17 @@ class FileXml
 
 
 
+
+
+
+
+class HTMLrealt
+
+
+
 ActiveRecord::Base.establish_connection(
   :adapter  => "mysql2",
+  :encoding  => "cp1251",
   :host     => "127.0.0.1",
   :username => "root",
   :password => "18281828",
@@ -130,7 +139,6 @@ end
 
 
 
-class HTMLrealt
 
    @resTable = Array.new #для записи результата
    
@@ -147,7 +155,56 @@ class HTMLrealt
 
       
    def templetN(arg)
-      
+      #print "____________________", Realt.column_names, "\n\n"
+      nameOfColumns = Realt.column_names #массив с именами полей таблицы базы данных
+	  countColumn = nameOfColumns.size #количество полей базы данных
+	  hashTd = Hash.new
+	  
+	  nameOfColumns.each {|key| hashTd[key.to_sym] = nil}
+	  
+	  arrayTd = Array.new
+      arg.search(:tr).each do |resTr|
+	     i = 1
+	     resTr.search(:td).each do |resTd|
+		      
+		     if i==3
+			   then 
+			        #проверка на существование первичных ключей
+			        if  Realt.where(Street_number: arrayTd[0], district: arrayTd[1]).exists?
+                      then 
+					       #print "____________________", Realt.exists?, "\n\n"
+                           arrayTd.clear						   
+					       break
+                    end		
+			 end
+			 
+			 arrayTd << resTd.inner_html #массив с даными таблицы
+			 
+			 if i == countColumn
+			   then break			   
+			 end
+			 			 
+		     i += 1
+		      
+		 end
+	     #print "array of td", arrayTd, "\n\n"
+		 
+		 if !(arrayTd.empty?)
+		   then
+		     j = 0
+		     hashTd.each_key {|key| hashTd[key] = arrayTd[j]; j += 1} #хэш с данными	
+             
+			 print "____________________", hashTd, "\n\n"			 
+		     		 
+			 Realt.create(hashTd) #вставка в базу даных
+			 
+			  
+		 end
+		 ################################################################
+	     arrayTd.clear
+	  end
+   
+    
    
       @file.write arg 
 	  @file.write "\n"
