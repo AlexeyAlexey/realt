@@ -29,7 +29,7 @@ class MaileRealt < ActionMailer::Base
  
  def welcom(recipient, textHTML)
      
-	 mail(:to => recipient, :subject => "Welcom") do |format|	      
+	 mail(:to => recipient, :subject => "RealtReport file on the https://github.com/AlexeyAlexey/realt sum in dollars between 0 and 300") do |format|	      
          format.html { render :text => textHTML}
      end 
  
