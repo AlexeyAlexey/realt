@@ -366,7 +366,7 @@ end
 	   @xml1 = FileXml.new                 #создаем таблицу XML(HTML) class FileXml
 	   @strXML = @xml1.newTable @countColumn #создаем таблицу XML(HTML) указывая количество столбцов class FileXml
 	   @xml1.addTable ["Район города", "Улица, № дома", "Кол-во комнат", "Этаж :Этажность", "Площадь (кв.м) Общ. / Жил./ Кух.", "Цена/Мес." , "Дата"]
-        #перебирая параметром pos пролистываем html страницы	   
+        #перебирая параметром pos пролистываем html страницы #   
        countPage.times do |countP| 
           
 		 pos = countP*50
