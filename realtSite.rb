@@ -5,7 +5,6 @@ require 'fileutils'
 require 'open-uri' 
 
 require 'hpricot'
-require 'fileutils'
 
 require 'rexml-expansion-fix'
 

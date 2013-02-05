@@ -1,1 +1,1 @@
-﻿worker:  bundle exec ruby realtSite.rb
+﻿clock: bundle exec clockwork clock.rb

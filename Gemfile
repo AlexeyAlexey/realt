@@ -3,15 +3,16 @@ source 'https://rubygems.org'
 
 gem 'mysql2'
 
-gem 'fileutils'
-gem 'open-uri' 
+gem 'clockwork'
+
+gem "open-uri-cached", "~> 0.0.5"
 
 gem 'hpricot'
 gem 'fileutils'
 
 gem 'rexml-expansion-fix'
 
-gem 'rubygems'
-gem 'active_record'
 
-gem 'action_mailer'
+gem 'activerecord'
+
+gem 'actionmailer'
