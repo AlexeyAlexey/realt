@@ -150,9 +150,9 @@ class HTMLrealt
 ActiveRecord::Base.establish_connection(
   :adapter  => "mysql2",
   :encoding  => "cp1251",
-  :host     => "127.0.0.1",
-  :username => "root",
-  :password => "18281828",
+  :host     => "us-cdbr-east-03.cleardb.com",
+  :username => "b2de1d2c131a92",
+  :password => "ed316f52",
   :database => "realt"
   )
   

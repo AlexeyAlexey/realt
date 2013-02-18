@@ -28,8 +28,12 @@ GEM
       multi_json (~> 1.0)
     arel (3.0.2)
     builder (3.0.4)
+    choice (0.1.6)
     clockwork (0.4.1)
       tzinfo
+    erd (0.1.6)
+      nokogiri
+      rails-erd (>= 0.4.5)
     erubis (2.7.0)
     fileutils (0.7)
       rmagick (>= 2.13.1)
@@ -45,6 +49,7 @@ GEM
     multi_json (1.5.0)
     mysql2 (0.3.11)
     mysql2 (0.3.11-x86-mingw32)
+    nokogiri (1.5.6-x86-mingw32)
     open-uri-cached (0.0.5)
     polyglot (0.3.3)
     rack (1.4.4)
@@ -52,8 +57,14 @@ GEM
       rack (>= 0.4)
     rack-test (0.6.2)
       rack (>= 1.0)
+    rails-erd (1.1.0)
+      activerecord (>= 3.0)
+      activesupport (>= 3.0)
+      choice (~> 0.1.6)
+      ruby-graphviz (~> 1.0.4)
     rexml-expansion-fix (1.0.1)
     rmagick (2.13.2)
+    ruby-graphviz (1.0.8)
     sprockets (2.2.2)
       hike (~> 1.2)
       multi_json (~> 1.0)
@@ -72,6 +83,7 @@ DEPENDENCIES
   actionmailer
   activerecord
   clockwork
+  erd
   fileutils
   hpricot
   mysql2
