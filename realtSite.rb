@@ -152,7 +152,7 @@ ActiveRecord::Base.establish_connection(
   :encoding  => "cp1251",
   :host     => "us-cdbr-east-03.cleardb.com",
   :username => "b2de1d2c131a92",
-  :password => "ed316f52",
+  :password => "ed316f52".encode('Windows-1251'),
   :database => "realt"
   )
   
@@ -289,7 +289,7 @@ end
 	  @strHtml = uri.read #возвращает html страницу которая сохраняется в str
 	  @encodingStr = @strHtml.encoding.name #переменная содержащая кодировку
 	  
-	  ic = Iconv.new('cp1251//IGNORE', 'cp1251')
+	  ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
     @strHtml = ic.iconv(@strHtml)
 	  
     Hpricot(@strHtml) #Используем Hpricot для анализа html  
