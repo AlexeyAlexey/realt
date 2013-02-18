@@ -289,8 +289,8 @@ end
 	  @strHtml = uri.read #возвращает html страницу которая сохраняется в str
 	  @encodingStr = @strHtml.encoding.name #переменная содержащая кодировку
 	  
-	  #ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
-    #@strHtml = ic.iconv(@strHtml)
+	  ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
+    @strHtml = ic.iconv(@strHtml)
 	  
     Hpricot(@strHtml) #Используем Hpricot для анализа html  
    end
