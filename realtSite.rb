@@ -1,12 +1,12 @@
 ﻿#coding: UTF-8
-#require 'iconv'
+
 #require 'net/http'
 
 # в данной программе вместо xml используем erb
 # в переменной класса @resTable сохраняем массив с данными таблицы
 
 require 'open-uri' 
-
+require 'iconv'
 require 'hpricot'
 require 'fileutils'
 
