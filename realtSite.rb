@@ -33,7 +33,7 @@ class MaileRealt < ActionMailer::Base
  
  def welcom(recipient, textHTML)
      
-	 mail(:to => recipient, :subject => "RealtReport file on the https://github.com/AlexeyAlexey/realt sum in dollars between 0 and 300") do |format|	      
+	 mail(:to => recipient, :subject => "RealtReport 2 file on the https://github.com/AlexeyAlexey/realt sum in dollars between 0 and 300") do |format|	      
          format.html { render :text => textHTML}
      end 
  
@@ -147,14 +147,7 @@ class FileXml
 class HTMLrealt
 
 
-ActiveRecord::Base.establish_connection(
-  :adapter  => "mysql2",
-  :encoding  => "cp1251",
-  :host     => "us-cdbr-east-03.cleardb.com",
-  :username => 'b2de1d2c131a92',
-  :password => 'ed316f52',
-  :database => "realt"
-  )
+ActiveRecord::Base.establish_connection("mysql2://b2de1d2c131a92:ed316f52@us-cdbr-east-03.cleardb.com/heroku_bd8015972428027")
   
   
 class Realt < ActiveRecord::Base
