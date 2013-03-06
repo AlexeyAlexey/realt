@@ -1,0 +1,9 @@
+#!clockwork --encoding=cp1251
+#coding: UTF-8
+require 'clockwork'
+require File.expand_path('../realtSite.rb', __FILE__)
+
+include Clockwork
+
+
+every(5.minutes, 'Queueing interval job') { Delayed::Job.enqueue IntervalJob.new  }

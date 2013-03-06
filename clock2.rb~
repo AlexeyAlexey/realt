@@ -1,0 +1,19 @@
+#!ruby --encoding=cp1251
+#coding: UTF-8
+require File.expand_path('../realtSite2.rb', __FILE__)
+require 'clockwork'
+include Clockwork
+
+handler do |job|
+  
+  
+htm = HTMLrealt.new("http://realt.ua", "/Db2/0Sd_Kv.php?", 2, 0, 300, 0)
+
+
+htm.catchPage("[Рр]айон города", "Улица.+", ".+Кол-во.+комнат.+", ".+Этаж :.+")#Ищет таблицу по шапке
+
+MaileRealt.welcom("alexey.kondratenko@mail.ru", htm.email).deliver
+end
+
+every(10.seconds, 'frequent.job')
+

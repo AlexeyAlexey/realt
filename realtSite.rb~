@@ -1,21 +1,11 @@
-﻿$KCODE = 'cp1251'
+
 #coding: UTF-8
 
-#require 'net/http'
-
-# в данной программе вместо xml используем erb
-# в переменной класса @resTable сохраняем массив с данными таблицы
-
 require 'open-uri' 
-#require 'iconv'
 require 'hpricot'
 require 'fileutils'
-
 require 'rexml-expansion-fix'
-
-#require 'rubygems'
 require 'active_record'
-
 require 'action_mailer'
 require 'erb'
 
@@ -47,127 +37,26 @@ end
 class WrongNumberOfColumnc < StandardError ; end
 
 
-
-class FileXml
-
-  attr_accessor :doc
-  
- def newTable(countColomn)   #создает REXML с тегом <table></table> и присваивает переменной экземпляра @doc  
-   
-     @doc = REXML::Document.new
-     @doc.add_element("table")
-   root = @doc.root
-   root.add_attribute("cols", countColomn)
-   root.add_attributes("border" => "1", "align" => "center", "rules" => "cols") #необходимы для отображения HTML
-   
-   
-   
-   
-   return @doc
-   
- end
- 
-   
-  
- 
-  def addTable(arrayColumn) # добавлят в XML документ ячейки с данными указанными в массиве
-     
-   countArColumn = arrayColumn.length
-   rootTable = @doc.root
-     @countColumn = (rootTable.attributes["cols"]).to_i
-   
-   
-   raise WrongNumberOfColumnc unless countArColumn == @countColumn
-   
-   rootTr = rootTable.add_element("tr")
-   
-   
-     @countColumn.times do |countC|
-       rootTd = rootTr.add_element("td")
-     rootTd.add_attributes("title" => countC.to_s, "align" => "center", "valign" => "middle")
-     rootTd.add_text arrayColumn[countC].encode("Windows-1251")
-   
-   end
-
-   return @doc
-  
-  end
-
- def saveNewXML(nameFile) # сохраняеи в указаный файл
-     file = File.open(nameFile, 'w')
-   @doc.write(out_string = "", 2)
-     file.puts out_string
-   file.close
- end
-     
- def fileOpenTable(nameFile) #открывается XML если существует или создает новый
-          
-   fileOpenXML = File.open(nameFile, 'r')
-   line = ""
-   fileOpenXML.each {|l| line<<l}
-   print line
-   str = line
-   print "\n\n", str, "\n\n"
-   @doc = REXML::Document.new str
-   fileOpenXML.close
-    
-   return @doc
-   
-  end
-  
-  
-  def searchTable(title, value)
-  
-     REXML::XPath.each(@doc, "//td") do |tdElement|
-       
-     if (tdElement.attributes["title"] = 2 and tdElement.text = value)
-       then return true
-       else return nil
-     end
-     
-     
-   
-   end
-  
-  
-  end
-  
-  def saveInHTML(nameFile)
-     file = File.open(nameFile, 'w')
-   @doc.write(out_string = "", 2)
-     file.puts out_string
-   file.close
-  
-  
-  end
-  
- end
-
-
-
-class HTMLrealt
-
-
 ActiveRecord::Base.establish_connection("mysql2://b2de1d2c131a92:ed316f52@us-cdbr-east-03.cleardb.com/heroku_bd8015972428027")
   
   
 class Realt < ActiveRecord::Base
 end
 
-  attr_accessor :email, :xml
+
+class HTMLrealt
 
 
-   
-   
-   def initialize(urlS, urlQ, valt, сn_min, сn_max, vSps)
-     #текущий рабочий каталог
-	  #file = File.open('tableXML.xml', 'r')
-      #@xmlREXML = REXML::Document.new file.gets
-	  #print "\n\n\n\n@xmlREXML = ",@xmlREXML ,"\n\n\n\n"
+  attr_accessor :email
+
+private 
+  
+   def initialize(urlS, urlQ, valt, сn_min, сn_max, vSps)      
+	  
 	  @resTable = Array.new #для записи результата
 	  @urlSite = proc{ |showNum, pos| "#{urlS}#{urlQ}Cn_min=#{сn_min}&Cn_max=#{сn_max}&TmSdch=#{9999}&srtby=#{5}&showNum=#{showNum}&vSps=#{vSps}&idNp=#{100000}&pos=#{pos}&valt=#{valt}"}
 	  
-	  htmlHpricot(0, 0) # в переменной @encodingStr получаем кодировку
+	  htmlHpricot 0, 0
    end
 
       
@@ -213,7 +102,7 @@ end
 			 
 			  @resTable << arrayTd.clone #передаем массив значений столбцов
 			  
-			  @xml.addTable arrayTd     #передаем массив значений столбцов
+			  
 		 end
 		 
 	      arrayTd.clear
@@ -221,16 +110,8 @@ end
       
    end
    
-   def temletSearch(argSearch, title)
+    
       
-	  #возвращает false or tru
-   
-   end
-   
-   def templetW(arg)
-       # Записывает в XML arg - массив элементы которого есть ячейки
-   end
-   
    
    def parseTableHTML(htmlHpricot, countOfBox)
       
@@ -258,41 +139,25 @@ end
    
    end
    
-   def formdRequest(urlS, urlQ, valt, сn_min, сn_max, vSps) 
-      #Шаблон запроса
-	    #http://realt.ua/Db2/0Sd_Kv.php?cnt_all=289&idNp=100000&Cn_min=1000&Cn_max=3000&valt=4&TmSdch=9999&vSps=0&srtby=5&pos=0
-      #Cn_min= минимальная цена
-      #Cn_max= максимальная цена
-      #valt тип валюты 4-евро 2-долары 1-гривня
-      #при добавлении vSps=0 оттображается таблицей 
-      #cnt_all количество строк таблицы вернувшихся с сервера (можно пропускать)
-	    #showNum количество строк отображаемых в таблице вывода 20, 30, 50 задать вручную
-	    #pos перелистывает страницу на следующие n строк при showNum=50 - 0, 50, 100. Необходимо вычислять через параметр cnt_all и showNum
-	    #порядок следования переменных безразлично   
-	  
-	   
-	  
-	  
-   end
+  
    
    def htmlHpricot(showNum, pos)
        	  
 	  #print "urlTable @urlSite  :", @urlSite.call(showNum, pos), "\n\n"
       #OpenURI is an easy-to-use wrapper for net/http, net/https and net/ftp.
-	  uri = URI.parse(@urlSite.call(showNum, pos))
+	  uri = URI.parse @urlSite.call(showNum, pos)
 	  @strHtml = uri.read #возвращает html страницу которая сохраняется в str
 	  @encodingStr = @strHtml.encoding.name #переменная содержащая кодировку
 	  
-	  #ic = Iconv.new('UTF-8//IGNORE', 'UTF-8')
-      #@strHtml = ic.iconv(@strHtml)
+	 
 	  
-    Hpricot(@strHtml) #Используем Hpricot для анализа html  
+    Hpricot @strHtml #Используем Hpricot для анализа html  
    end
    
    def searchCnt_all(strHtmlHpr) #находит значение переменной cnt_all которая используется в URI
        
 	   countLinStr = "http:\/\/realt\.ua.+(cnt_all=[0-9]+).+"#.encode("Windows-1251")
-	   countLinExpr = Regexp.compile(countLinStr) #Создает регулярное выражение из строки
+	   countLinExpr = Regexp.compile countLinStr #Создает регулярное выражение из строки
 	   
        	    
 	   #Используем Hpricot для анализа html в строке str хранится html страница
@@ -310,7 +175,8 @@ end
 	   
    
    end
-   
+ 
+public
    
    def catchPage(*titleTableExpr) 
        
@@ -318,30 +184,16 @@ end
 	   pos = 0
 	   
 	   
-       self.searchCnt_all htmlHpricot(showNum, pos)  
+       searchCnt_all htmlHpricot(showNum, pos)  
    
-       #print "Количество ключевых столбцов по которым ищется таблица: ", titleTable.count, "\n\n"
-	   
-       
-       #Находит таблицу по шапке заключенную в теги <table> <tr><th></th></tr> </table>
-       # При работе возникла проблема с кодировкой текста. В консоле Windows была кодировка IBM6680 при которой выдавало ошибку при перекодировке 
-	     #в Windows-1251. Для исправления данной ошибки изменил кодировку текста в консоле Start->Run->regedit
-       #Go to [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Nls\CodePage]
-       #And change the "OEMCP" value to "1252"  
-	   
-	   
-	   #print "Charset of html page is ", @encodingStr, "\n\n"#возвращет кодировку страницы
-	   
-	   
-		
+       		
 		#Массив с регулярными выражениями
 	   titleTableExpr.map! do |t| 
-	        t2=t.encode(@encodingStr)#изменяем кодировку строки соответствено html
-			    Regexp.compile(t2) #создаем объект регулярного выражения	   
+	        t2=t.encode @encodingStr#изменяем кодировку строки соответствено html
+			    Regexp.compile t2 #создаем объект регулярного выражения	   
 	   
 	   end
 		
-	   #file = File.open('realt.xml', 'w:windows-1251') #открывает файл для записи результата для удобства просмотра	"w:utf-8"
 	   
 	   countPage = @cnt_all/50 + 1
 	   
@@ -355,16 +207,12 @@ end
 	   	   
      titleTable = ["Район города", "Улица, № дома", "Кол-во комнат", "Этаж :Этажность", "Площадь (кв.м) Общ. / Жил./ Кух.", "Цена/Мес." , "Дата"]
      
-     @xml = FileXml.new                 #создаем таблицу XML(HTML) class FileXml
-     @xml.newTable @countColumn #создаем таблицу XML(HTML) указывая количество столбцов class FileXml
-     @xml.addTable titleTable
-       
-	  	   
-	   @resTable << titleTable.map {|el| el.encode(@encodingStr)}
+       	   
+	   @resTable << titleTable.map {|el| el.encode @encodingStr}
      
         
         
-        #перебирая параметром pos пролистываем html страницы #   
+        #пролистываем страницы
       countPage.times do |countP| 
           
 		  pos = countP*50
@@ -387,11 +235,11 @@ end
 		
        end	
 
-   
+       #Используем ERB для оформления результата
        pathHTMLerb = File.expand_path('../realt.html', __FILE__)
        
        
-       fileRealtHTML = File.read(pathHTMLerb, encoding: @encodingStr)
+       fileRealtHTML = File.read pathHTMLerb, encoding: @encodingStr
        erbHTML = ERB.new fileRealtHTML
        
        @email = erbHTML.result binding
@@ -405,6 +253,7 @@ end
 
 htm = HTMLrealt.new("http://realt.ua", "/Db2/0Sd_Kv.php?", 2, 0, 300, 0)
 
-htm.catchPage("[Рр]айон города", "Улица.+", ".+Кол-во.+комнат.+", ".+Этаж :.+")
+
+htm.catchPage("[Рр]айон города", "Улица.+", ".+Кол-во.+комнат.+", ".+Этаж :.+")#Ищет таблицу по шапке
 
 MaileRealt.welcom("alexey.kondratenko@mail.ru", htm.email).deliver
