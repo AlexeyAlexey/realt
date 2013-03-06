@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 ﻿worker: ruby realtSite.rb
+=======
+﻿clock: bundle exec clockwork clock.rb
+>>>>>>> 8faddc850d38ac00fcc800bb7f73fafc326c3e50

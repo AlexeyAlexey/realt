@@ -23,8 +23,9 @@ class MaileRealt < ActionMailer::Base
  self.default :from => "ialexey.kondratenko@gmail.com", :charset => "Windows-1251"
  
  def welcom(recipient, textHTML)
-     
+
 	 mail(:to => recipient, :subject => "RealtReport 2 file on the https://github.com/AlexeyAlexey/realt sum in dollars between 0 and 300") do |format|	      
+
          format.html { render :text => textHTML}
      end 
  
@@ -57,6 +58,7 @@ private
 	  @urlSite = proc{ |showNum, pos| "#{urlS}#{urlQ}Cn_min=#{сn_min}&Cn_max=#{сn_max}&TmSdch=#{9999}&srtby=#{5}&showNum=#{showNum}&vSps=#{vSps}&idNp=#{100000}&pos=#{pos}&valt=#{valt}"}
 	  
 	  htmlHpricot 0, 0
+
    end
 
       
@@ -101,17 +103,13 @@ private
 			  Realt.create(hashTd) #вставка в базу даных
 			 
 			  @resTable << arrayTd.clone #передаем массив значений столбцов
-			  
-			  
 		 end
 		 
 	      arrayTd.clear
 	  end
       
    end
-   
-    
-      
+
    
    def parseTableHTML(htmlHpricot, countOfBox)
       
@@ -138,13 +136,13 @@ private
 	   end
    
    end
-   
-  
+
    
    def htmlHpricot(showNum, pos)
        	  
 	  #print "urlTable @urlSite  :", @urlSite.call(showNum, pos), "\n\n"
       #OpenURI is an easy-to-use wrapper for net/http, net/https and net/ftp.
+
 	  uri = URI.parse @urlSite.call(showNum, pos)
 	  @strHtml = uri.read #возвращает html страницу которая сохраняется в str
 	  @encodingStr = @strHtml.encoding.name #переменная содержащая кодировку
@@ -157,8 +155,8 @@ private
    def searchCnt_all(strHtmlHpr) #находит значение переменной cnt_all которая используется в URI
        
 	   countLinStr = "http:\/\/realt\.ua.+(cnt_all=[0-9]+).+"#.encode("Windows-1251")
+
 	   countLinExpr = Regexp.compile countLinStr #Создает регулярное выражение из строки
-	   
        	    
 	   #Используем Hpricot для анализа html в строке str хранится html страница
 	   
@@ -177,13 +175,14 @@ private
    end
  
 public
-   
+
    def catchPage(*titleTableExpr) 
        
 	   showNum = 50
 	   pos = 0
 	   
 	   
+
        searchCnt_all htmlHpricot(showNum, pos)  
    
        		
@@ -194,7 +193,7 @@ public
 	   
 	   end
 		
-	   
+   
 	   countPage = @cnt_all/50 + 1
 	   
 	   if countPage == 0
@@ -212,7 +211,7 @@ public
      
         
         
-        #пролистываем страницы
+      #пролистываем страницы
       countPage.times do |countP| 
           
 		  pos = countP*50
@@ -235,11 +234,13 @@ public
 		
        end	
 
+
        #Используем ERB для оформления результата
        pathHTMLerb = File.expand_path('../realt.html', __FILE__)
        
        
        fileRealtHTML = File.read pathHTMLerb, encoding: @encodingStr
+
        erbHTML = ERB.new fileRealtHTML
        
        @email = erbHTML.result binding
@@ -253,7 +254,7 @@ end
 
 htm = HTMLrealt.new("http://realt.ua", "/Db2/0Sd_Kv.php?", 2, 0, 300, 0)
 
-
 htm.catchPage("[Рр]айон города", "Улица.+", ".+Кол-во.+комнат.+", ".+Этаж :.+")#Ищет таблицу по шапке
+
 
 MaileRealt.welcom("alexey.kondratenko@mail.ru", htm.email).deliver
