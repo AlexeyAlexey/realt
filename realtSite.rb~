@@ -1,4 +1,4 @@
-#!ruby --encoding=cp1251
+﻿$KCODE = 'cp1251'
 #coding: UTF-8
 
 #require 'net/http'
