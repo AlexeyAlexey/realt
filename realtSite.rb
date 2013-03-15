@@ -9,13 +9,14 @@ require 'active_record'
 require 'action_mailer'
 require 'erb'
 
+
 ActionMailer::Base.smtp_settings = { 
                     :address => "smtp.gmail.com", 
                     :port => 587,#465, 
 					:authentication => :plain, 
 					:domain => "gmail.com",
 					:user_name => "ialexey.kondratenko", 
-					:password => '45673999Alexey',
+					:password => '',
 					:enable_starttls_auto => true
 					}
 
@@ -38,7 +39,7 @@ end
 class WrongNumberOfColumnc < StandardError ; end
 
 
-ActiveRecord::Base.establish_connection("mysql2://b2de1d2c131a92:ed316f52@us-cdbr-east-03.cleardb.com/heroku_bd8015972428027")
+ActiveRecord::Base.establish_connection("mysql2://XXXXXXXXXXXXcleardb.com/")
   
   
 class Realt < ActiveRecord::Base
