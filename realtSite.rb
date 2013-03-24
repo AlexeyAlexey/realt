@@ -25,7 +25,7 @@ class MaileRealt < ActionMailer::Base
  
  def welcom(recipient, textHTML)
 
-	 mail(:to => recipient, :subject => "RealtReport 2 file on the https://github.com/AlexeyAlexey/realt sum in dollars between 0 and 300") do |format|	      
+	 mail(:to => recipient, :subject => "RealtReport 2 file on the https://github.com/AlexeyAlexey/realt sum in dollars between 0 and 300. \n Worke with scheduler") do |format|	      
 
          format.html { render :text => textHTML}
      end 
@@ -258,4 +258,4 @@ htm = HTMLrealt.new("http://realt.ua", "/Db2/0Sd_Kv.php?", 2, 0, 300, 0)
 htm.catchPage("[Рр]айон города", "Улица.+", ".+Кол-во.+комнат.+", ".+Этаж :.+")#Ищет таблицу по шапке
 
 
-MaileRealt.welcom("alexey.kondratenko@mail.ru", htm.email).deliver
+MaileRealt.welcom("denis.kondratenko@gmail.com", htm.email).deliver
