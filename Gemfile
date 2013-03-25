@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'bundler'
 gem 'mysql2'
 gem 'clockwork'
 gem "open-uri-cached", "~> 0.0.5"
