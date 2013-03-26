@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-
+gem "rmagick", "2.13.2", :require => 'RMagick'
 gem 'mysql2'
 gem "open-uri-cached", "~> 0.0.5"
 gem 'thbar-hpricot'
@@ -9,4 +9,3 @@ gem 'rexml-expansion-fix'
 gem 'activerecord'
 gem 'actionmailer'
 gem 'erd'
-require 'iconv'
