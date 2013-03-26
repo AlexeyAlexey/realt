@@ -1,6 +1,8 @@
-source 'https://rubygems.org'
+source: rubygems repository https://rubygems.org/
 
-gem "rmagick", "2.13.2", :require => 'RMagick'
+
+
+gem "rmagick", "~> 2.13.2"
 gem 'mysql2'
 gem "open-uri-cached", "~> 0.0.5"
 gem 'thbar-hpricot'
