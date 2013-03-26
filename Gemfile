@@ -1,4 +1,4 @@
-source: rubygems repository https://rubygems.org/
+source: https://rubygems.org/
 
 
 
