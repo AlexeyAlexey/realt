@@ -16,7 +16,7 @@ ActionMailer::Base.smtp_settings = {
 					:authentication => :plain, 
 					:domain => "gmail.com",
 					:user_name => "ialexey.kondratenko", 
-					:password => '1828alexey',
+					:password => 'xxxx',
 					:enable_starttls_auto => true
 					}
 
@@ -39,7 +39,7 @@ end
 class WrongNumberOfColumnc < StandardError ; end
 
 
-ActiveRecord::Base.establish_connection("mysql2://b2de1d2c131a92:ed316f52@us-cdbr-east-03.cleardb.com/heroku_bd8015972428027")
+ActiveRecord::Base.establish_connection("mysql2://")
   
   
 class Realt < ActiveRecord::Base
@@ -258,4 +258,4 @@ htm = HTMLrealt.new("http://realt.ua", "/Db2/0Sd_Kv.php?", 2, 0, 300, 0)
 htm.catchPage("[Рр]айон города", "Улица.+", ".+Кол-во.+комнат.+", ".+Этаж :.+")#Ищет таблицу по шапке
 
 
-MaileRealt.welcom("denis.kondratenko@gmail.com", htm.email).deliver
+MaileRealt.welcom("@gmail.com", htm.email).deliver
